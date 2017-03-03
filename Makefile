@@ -4,6 +4,7 @@ setup:
 	go get -u github.com/Masterminds/glide
 	go get -u github.com/pierrre/gotestcover
 	go get -u golang.org/x/tools/cmd/cover
+	go get -u github.com/stretchr/testify
 	glide install
 
 test:

@@ -1,0 +1,34 @@
+box: golang:1.8
+dev:
+  steps:
+    - internal/watch:
+        code: |
+          go build ./...
+          ./source
+        reload: true
+# Build definition
+build:
+  base-path: /go/src/github.com/leandro-lugaresi/hydra-idp
+  # The steps that will be executed on build
+  steps:
+
+    # golint step!
+    - wercker/golint:
+        exclude: vendor
+
+    # Setup the project
+    - script:
+        name: setup
+        code: |
+          make setup
+    # Test the project
+    - script:
+        name: go test
+        code: |
+          make test
+    
+    # Build
+    - script:
+      name: go build
+      code: |
+        make build

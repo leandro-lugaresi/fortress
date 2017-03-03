@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package internal;
+
+import "google/protobuf/timestamp.proto";
+
+message Event {
+    string id = 1;
+    string aggregate_id = 2;
+    string aggregate_type = 3;
+    string event_type = 4;
+    google.protobuf.Timestamp timestamp = 5;
+    int64 version = 6;
+    oneof data {
+        AccountCreated account_created = 30;
+        AccountConfirmationRequested account_confirmation_requested = 31;
+        AccountConfirmed account_confirmed = 32;
+        AccountEmailChanged account_email_changed = 34;
+        AccountPasswordChanged account_password_changed = 35;
+        AccountLoggedIn account_logged_in = 36;
+        AccountAddedOTPAuth account_added_otp_auth = 37;
+        AccountScratchCodeUsed account_scratch_code_used = 38;
+        AccountOTPAuthRemoved account_otp_auth_removed = 39;
+        AccountPhoneAdded account_phone_added = 40;
+        AccountPhoneEdited account_phone_edited = 41;
+    }
+}
+
+enum HashType {
+		BCRYPT = 0;
+        SCRYPT = 1;
+}
+
+message AccountCreated {
+    string email = 1;
+    string encrypted_password = 2;
+    HashType hash_type = 3;
+    string first_name = 4;
+    string last_name = 5;
+}
+
+message AccountConfirmationRequested {
+    string confirmation_token = 1;
+}
+
+message AccountConfirmed {
+
+}
+
+message AccountEmailChanged {
+    string email = 1;
+}
+
+message AccountPasswordChanged {
+    string encrypted_password = 1;
+    HashType hash_type = 2;    
+}
+
+message AccountLoggedIn {}
+
+message AccountAddedOTPAuth {
+    string secret = 1;
+    repeated int64 scratch_codes = 2;
+}
+
+message AccountScratchCodeUsed {
+    int64 scratch_code = 1;
+}
+
+message AccountOTPAuthRemoved {}
+
+// AccountPhoneAdded are fired when the phone are added and already validade as the user phone.
+message AccountPhoneAdded {
+    string phone = 1;
+}
+
+// AccountPhoneEdited are fired when the phone are added and already validade as the user phone.
+message AccountPhoneEdited {
+    string phone = 1;
+}

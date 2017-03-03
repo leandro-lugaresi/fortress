@@ -1,4 +1,47 @@
-hash: 09c66252e45cbef0bcb45ecdee4e23abf2267f2aca2bf519c88ff2cd0e7c7fa6
-updated: 2017-02-09T00:26:24.265880192-02:00
-imports: []
-testImports: []
+hash: 4c30826c7fad83dc3aa741de0850bd88d807ce3ecdd3404ef10fc0fe31a40653
+updated: 2017-04-22T18:45:21.832415499-03:00
+imports:
+- name: github.com/gogo/protobuf
+  version: 100ba4e885062801d56799d78530b73b178a78f3
+- name: github.com/looplab/eventhorizon
+  version: 0decd8da90606084766566e4d1e31094c7e0a9b0
+- name: gopkg.in/hlandau/passlib.v1
+  version: 933f1c3f63ffb0d17de04c3174f875ae683a33cd
+  subpackages:
+  - abstract
+  - hash/bcrypt
+  - hash/bcryptsha256
+  - hash/scrypt
+  - hash/scrypt/raw
+  - hash/sha2crypt
+  - hash/sha2crypt/raw
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
+  subpackages:
+  - spew
+- name: github.com/hlandau/passlib
+  version: 933f1c3f63ffb0d17de04c3174f875ae683a33cd
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
+- name: github.com/stretchr/testify
+  version: 4d4bfba8f1d1027c4fdbe371823030df51419987
+  subpackages:
+  - assert
+  - require
+  - suite
+- name: golang.org/x/crypto
+  version: 96846453c37f0876340a66a47f3f75b1f3a6cd2d
+  subpackages:
+  - bcrypt
+  - blowfish
+  - pbkdf2
+  - scrypt
+- name: gopkg.in/hlandau/easymetric.v1
+  version: 1c173222e345c2ba115e0f483821c6da2d3b0fa9
+  subpackages:
+  - cexp
+- name: gopkg.in/hlandau/measurable.v1
+  version: d96a009bd9bda94dd1294105e67e8c1794e533d3
