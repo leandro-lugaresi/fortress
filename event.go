@@ -1,74 +1,73 @@
 package hydraidp
 
-import (
-	eh "github.com/looplab/eventhorizon"
-)
+import "time"
 
-// Constants represeting system events.
-const (
-	AccountCreatedEvent               eh.EventType = "AccountCreated"
-	AccountConfirmationRequestedEvent eh.EventType = "AccountConfirmationRequested"
-	AccountConfirmedEvent             eh.EventType = "AccountConfirmed"
-	AccountEmailChangedEvent          eh.EventType = "AccountEmailChanged"
-	AccountPasswordChangedEvent       eh.EventType = "AccountPasswordChanged"
-	AccountLoggedInEvent              eh.EventType = "AccountLoggedIn"
-	AccountAddedOTPAuthEvent          eh.EventType = "AccountAddedOTPAuth"
-	AccountScratchCodeUsedEvent       eh.EventType = "AccountScratchCodeUsed"
-	AccountOTPAuthRemovedEvent        eh.EventType = "AccountOTPAuthRemoved"
-	AccountPhoneAddedEvent            eh.EventType = "AccountPhoneAdded"
-	AccountPhoneEditedEvent           eh.EventType = "AccountPhoneEdited"
-)
-
-func init() {
-	eh.RegisterEventData(AccountCreatedEvent, func() eh.EventData {
-		return &AccountCreatedData{}
-	})
-	eh.RegisterEventData(AccountConfirmationRequestedEvent, func() eh.EventData {
-		return &AccountConfirmationRequestedData{}
-	})
-	eh.RegisterEventData(AccountEmailChangedEvent, func() eh.EventData {
-		return &AccountEmailChangedData{}
-	})
-	eh.RegisterEventData(AccountPasswordChangedEvent, func() eh.EventData {
-		return &AccountPasswordChangedData{}
-	})
-	eh.RegisterEventData(AccountPhoneAddedEvent, func() eh.EventData {
-		return &AccountPhoneAddedData{}
-	})
-	eh.RegisterEventData(AccountPhoneEditedEvent, func() eh.EventData {
-		return &AccountPhoneEditedData{}
-	})
-}
-
-// AccountCreatedData is the event data for when an account has been created.
-type AccountCreatedData struct {
+// AccountCreated is the event data for when an account has been created.
+type AccountCreated struct {
+	occurredOn        time.Time
 	Email             string
-	EncryptedPassword string
+	EncryptedPassword []byte
 	FirstName         string
 	LastName          string
 }
 
-// AccountEmailChangedData is the event data for when an email change has completed.
-type AccountEmailChangedData struct {
-	Email string
+// OccurredOn return the time when the event occurred. Its used to implement the goengine.DomainEvent
+func (e *AccountCreated) OccurredOn() time.Time {
+	return e.occurredOn
 }
 
-// AccountPasswordChangedData is the event data for when an password has been changed.
-type AccountPasswordChangedData struct {
-	EncryptedPassword string
+// AccountEmailChanged is the event data for when an email change has completed.
+type AccountEmailChanged struct {
+	occurredOn time.Time
+	NewEmail   string
+	OldEmail   string
 }
 
-// AccountPhoneAddedData is the event data for when an phone has been added.
-type AccountPhoneAddedData struct {
-	Phone string
+// OccurredOn return the time when the event occurred. Its used to implement the goengine.DomainEvent
+func (e *AccountEmailChanged) OccurredOn() time.Time {
+	return e.occurredOn
 }
 
-// AccountPhoneEditedData is the event data for when an phone has been edited.
-type AccountPhoneEditedData struct {
-	Phone string
+// AccountPasswordChanged is the event data for when an password has been changed.
+type AccountPasswordChanged struct {
+	occurredOn        time.Time
+	EncryptedPassword []byte
 }
 
-// AccountConfirmationRequestedData is the event for when a email needs a confirmation request.
-type AccountConfirmationRequestedData struct {
-	ConfirmationHash string
+// OccurredOn return the time when the event occurred. Its used to implement the goengine.DomainEvent
+func (e *AccountPasswordChanged) OccurredOn() time.Time {
+	return e.occurredOn
+}
+
+// AccountPhoneAdded is the event data for when an phone has been added.
+type AccountPhoneAdded struct {
+	occurredOn time.Time
+	Phone      string
+}
+
+// OccurredOn return the time when the event occurred. Its used to implement the goengine.DomainEvent
+func (e *AccountPhoneAdded) OccurredOn() time.Time {
+	return e.occurredOn
+}
+
+// AccountPhoneEdited is the event data for when an phone has been edited.
+type AccountPhoneEdited struct {
+	occurredOn time.Time
+	Phone      string
+}
+
+// OccurredOn return the time when the event occurred. Its used to implement the goengine.DomainEvent
+func (e *AccountPhoneEdited) OccurredOn() time.Time {
+	return e.occurredOn
+}
+
+// AccountConfirmationRequested is the event for when a email needs a confirmation request.
+type AccountConfirmationRequested struct {
+	occurredOn       time.Time
+	ConfirmationHash []byte
+}
+
+// OccurredOn return the time when the event occurred. Its used to implement the goengine.DomainEvent
+func (e *AccountConfirmationRequested) OccurredOn() time.Time {
+	return e.occurredOn
 }
