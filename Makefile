@@ -1,11 +1,11 @@
 SOURCE_FILES?=$$(glide novendor)
 
 setup:
-	go get -u github.com/Masterminds/glide
+	go get -u github.com/golang/dep/cmd/dep
 	go get -u github.com/pierrre/gotestcover
 	go get -u golang.org/x/tools/cmd/cover
 	go get -u github.com/stretchr/testify
-	glide install
+	dep ensure
 
 test:
 	gotestcover -coverprofile=coverage.out $(SOURCE_FILES) -run .

@@ -1,0 +1,25 @@
+memo = "69ccc1913b61ca859a1d7a7b6a48a036b43076155a875cd5ed485fe0eb7bd692"
+
+[[projects]]
+  name = "github.com/Sirupsen/logrus"
+  packages = ["."]
+  revision = "ba1b36c82c5e05c4f912a88eab0dcd91a171688f"
+  version = "v0.11.5"
+
+[[projects]]
+  name = "github.com/hellofresh/goengine"
+  packages = [".","errors","reflection"]
+  revision = "63167c869917c7558bfbdd06dcbc66ffb0ad233f"
+  version = "0.1.4"
+
+[[projects]]
+  name = "github.com/pborman/uuid"
+  packages = ["."]
+  revision = "a97ce2ca70fa5a848076093f05e639a89ca34d06"
+  version = "v1.0"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix"]
+  revision = "1e99a4f9d247b28c670884b9a8d6801f39a47b77"
