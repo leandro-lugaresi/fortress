@@ -2,14 +2,16 @@
 *.o
 *.a
 *.so
+*.exe
+*.dll
+*.prof
+debug
+
 
 # Folders
 _obj
 _test
-
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
+dist
 
 *.cgo1.go
 *.cgo2.c
@@ -19,6 +21,14 @@ _cgo_export.*
 
 _testmain.go
 
-*.exe
+
+# Test binary, build with `go test -c`
 *.test
-*.prof
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+coverage.txt
+
+# ignored until version 1.0
+vendor
+
