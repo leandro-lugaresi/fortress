@@ -40,7 +40,7 @@ func (d *nonBlockingSubscriber) Set(data Event) {
 func (d *nonBlockingSubscriber) Next() (Event, bool) {
 	data := d.d.Next()
 	if data == nil {
-		return Event{}, true
+		return nil, true
 	}
 	return *(*Event)(data), false
 }
@@ -60,5 +60,5 @@ func (s *blockingSubscriber) Set(event Event) {
 
 func (s *blockingSubscriber) Next() (Event, bool) {
 	e, ok := <-s.ch
-	return e, !ok
+	return e, ok
 }

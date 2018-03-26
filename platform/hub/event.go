@@ -5,18 +5,30 @@ import (
 	"time"
 )
 
-// Fields is a [key]value storage for events.
-type Fields map[string]interface{}
+type (
 
-// Event represent something that occurred with the application
-// Event also contain some helper functions to convert the fields to primitive types.
-type Event struct {
-	Name   string
-	Fields Fields
+	// Event represent something that occurred with the application.
+	Event interface {
+		Topic() string
+	}
+
+	// Fields is a [key]value storage for events.
+	Fields map[string]interface{}
+	// SimpleEvent is an simple event with a map for fields.
+	// It also contain some helper functions to convert the fields to primitive types.
+	SimpleEvent struct {
+		Name   string
+		Fields Fields
+	}
+)
+
+// Topic return the event name.
+func (e *SimpleEvent) Topic() string {
+	return e.Name
 }
 
 // Int return an int field of an Event.
-func (e *Event) Int(key string) int {
+func (e *SimpleEvent) Int(key string) int {
 	v, ok := e.Fields[key].(int)
 	if !ok {
 		log.Fatalf("Event %#v didn`t have the int field %s", e, key)
@@ -25,7 +37,7 @@ func (e *Event) Int(key string) int {
 }
 
 // Int64 return an int64 field of an Event.
-func (e *Event) Int64(key string) int64 {
+func (e *SimpleEvent) Int64(key string) int64 {
 	v, ok := e.Fields[key].(int64)
 	if !ok {
 		log.Fatalf("Event %#v didn`t have the int64 field %s", e, key)
@@ -34,7 +46,7 @@ func (e *Event) Int64(key string) int64 {
 }
 
 // Int32 return an int32 field of an Event.
-func (e *Event) Int32(key string) int32 {
+func (e *SimpleEvent) Int32(key string) int32 {
 	v, ok := e.Fields[key].(int32)
 	if !ok {
 		log.Fatalf("Event %#v didn`t have the int32 field %s", e, key)
@@ -43,7 +55,7 @@ func (e *Event) Int32(key string) int32 {
 }
 
 // Float64 return a float64 field of an Event.
-func (e *Event) Float64(key string) float64 {
+func (e *SimpleEvent) Float64(key string) float64 {
 	v, ok := e.Fields[key].(float64)
 	if !ok {
 		log.Fatalf("Event %#v didn`t have the float64 field %s", e, key)
@@ -52,7 +64,7 @@ func (e *Event) Float64(key string) float64 {
 }
 
 // String return a string field of an Event.
-func (e *Event) String(key string) string {
+func (e *SimpleEvent) String(key string) string {
 	v, ok := e.Fields[key].(string)
 	if !ok {
 		log.Fatalf("Event %#v didn`t have the string field %s", e, key)
@@ -61,7 +73,7 @@ func (e *Event) String(key string) string {
 }
 
 // Duration return a time.Duration field of an Event.
-func (e *Event) Duration(key string) time.Duration {
+func (e *SimpleEvent) Duration(key string) time.Duration {
 	v, ok := e.Fields[key].(time.Duration)
 	if !ok {
 		log.Fatalf("Event %#v didn`t have the time.Duration field %s", e, key)
