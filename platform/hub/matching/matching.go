@@ -28,6 +28,8 @@ type Subscription struct {
 	subscriber Subscriber
 }
 
+type Subscriber interface{}
+
 // Matcher contains topic subscriptions and performs matches on them.
 type Matcher interface {
 	// Subscribe adds the Subscriber to the topic and returns a Subscription.

@@ -17,6 +17,8 @@ type (
 	blockingSubscriber struct {
 		ch chan Event
 	}
+
+	discardSubscriber int
 )
 
 // NewNonBlockingSubscriber returns a new NonBlockingSubscriber diode to be used
@@ -62,3 +64,7 @@ func (s *blockingSubscriber) Next() (Event, bool) {
 	e, ok := <-s.ch
 	return e, ok
 }
+
+func (d discardSubscriber) Set(event Event) {}
+
+func (d discardSubscriber) Next() (Event, bool) { return nil, false }
