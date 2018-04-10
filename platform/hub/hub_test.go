@@ -6,6 +6,7 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/asaskevich/EventBus"
 	matching "github.com/tylertreat/fast-topic-matching"
 )
 
@@ -14,6 +15,54 @@ func BenchmarkMultithreaded4Thread9010(b *testing.B) {
 		matcher: matching.NewCSTrieMatcher(),
 	}
 	runBenchmark9010(b, 1000, 4, &h)
+}
+
+func BenchmarkEventBusMultithreaded4Thread9010(b *testing.B) {
+	numThreads := 4
+	numItems := 1000
+	bus := EventBus.New()
+
+	itemsToInsert := make([][]string, 0, numThreads)
+	for i := 0; i < numThreads; i++ {
+		items := make([]string, 0, numItems)
+		for j := 0; j < numItems; j++ {
+			topic := strconv.Itoa(j%10) + "." + strconv.Itoa(j%50) + "." + strconv.Itoa(j)
+			items = append(items, topic)
+		}
+		itemsToInsert = append(itemsToInsert, items)
+	}
+
+	var wg sync.WaitGroup
+	sub := discardSubscriber(0)
+	for i := 0; i < 100; i++ {
+		prefix := ""
+		topic := ""
+		for j := 0; j < 5; j++ {
+			topic += prefix + strconv.Itoa(rand.Int())
+			prefix = "."
+		}
+		bus.Subscribe(topic, sub.Set)
+	}
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		wg.Add(numThreads)
+		for j := 0; j < numThreads; j++ {
+			go func(j int) {
+				if j%10 == 0 {
+					for _, key := range itemsToInsert[j] {
+						bus.Subscribe(key, sub.Set)
+					}
+				} else {
+					for _, key := range itemsToInsert[j] {
+						bus.Publish(key, &SimpleEvent{Name: key})
+					}
+				}
+				wg.Done()
+			}(j)
+		}
+		wg.Wait()
+	}
 }
 
 func runBenchmark9010(b *testing.B, numItems, numThreads int, h *Hub) {

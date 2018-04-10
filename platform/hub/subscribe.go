@@ -13,7 +13,7 @@ type (
 		d *gendiodes.Poller
 	}
 
-	// blockingSubscriber uses an unbuffered channel receive events.
+	// blockingSubscriber uses an channel to receive events.
 	blockingSubscriber struct {
 		ch chan Event
 	}
@@ -36,7 +36,7 @@ func (d *nonBlockingSubscriber) Set(data Event) {
 	d.d.Set(gendiodes.GenericDataType(&data))
 }
 
-// Next will return the next Event to be read from the diode. If the
+// Next will return the next Event. If the
 // diode is empty this method will block until a Event is available to be
 // read or context is done. In case of context done we will return true on the second return param.
 func (d *nonBlockingSubscriber) Next() (Event, bool) {
@@ -47,8 +47,7 @@ func (d *nonBlockingSubscriber) Next() (Event, bool) {
 	return *(*Event)(data), false
 }
 
-// NewBlockingSubscriber returns a new NonBlockingSubscriber diode to be used
-// with many writers and a single reader.
+// NewBlockingSubscriber returns a new blocking subscriber using chanels imternally.
 func NewBlockingSubscriber() Subscriber {
 	return &blockingSubscriber{
 		ch: make(chan Event),
@@ -60,11 +59,13 @@ func (s *blockingSubscriber) Set(event Event) {
 	s.ch <- event
 }
 
+// Next will return the next Event. If the
+// diode is empty this method will block until a Event is available to be
+// read or context is done. In case of context done we will return true on the second return param.
 func (s *blockingSubscriber) Next() (Event, bool) {
 	e, ok := <-s.ch
 	return e, ok
 }
 
-func (d discardSubscriber) Set(event Event) {}
-
+func (d discardSubscriber) Set(event Event)     {}
 func (d discardSubscriber) Next() (Event, bool) { return nil, false }

@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -62,11 +63,23 @@ func TestThroughput(t *testing.T) {
 	}
 
 	before := time.Now()
-	for _, msg := range msgs {
-		msgv := msg
-		h.Publish(&msgv)
+	var wg sync.WaitGroup
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go func() {
+			for _, msg := range msgs {
+				msgv := msg
+				h.Publish(&msgv)
+			}
+			wg.Done()
+		}()
 	}
+	wg.Wait()
 	dur := time.Since(before)
-	throughput := numMsgs / dur.Seconds()
+	throughput := numMsgs * 10 / dur.Seconds()
 	fmt.Printf("%f msg/sec\n", throughput)
 }
+
+// 262372.533926 msg/sec 1 producer
+// 830439.529838 msg/sec 20 producers
+// 843773.151216 msg/sec 10 producer

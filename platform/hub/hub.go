@@ -40,8 +40,8 @@ func (h *Hub) Subscribe(topic string, sub Subscriber) (*matching.Subscription, e
 }
 
 // Unsubscribe remove and close the Subscription.
-func (h *Hub) Unsubscribe(sub *matching.Subscription) error {
-	return nil
+func (h *Hub) Unsubscribe(sub *matching.Subscription) {
+	h.matcher.Unsubscribe(sub)
 }
 
 // Close will remove and unsubcribe all the subscriptions.
